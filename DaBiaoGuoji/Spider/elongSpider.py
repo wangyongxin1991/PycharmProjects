@@ -8,6 +8,9 @@ import codecs
 import multiprocessing as mp
 from os import makedirs
 from os.path import exists
+from DaBiaoGuoji.Model import hotel
+
+
 from selenium import webdriver
 
 
@@ -19,7 +22,6 @@ locaction = '广州市'
 today = datetime.date.today()
 today_str = today.strftime('%Y-%m-%d')
 tomorrow_str = (today + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
-
 localKeyWords = '达镖国际中心'
 account = 'jiayi2014'
 password = 'jiayi001.'
@@ -41,10 +43,8 @@ def ticket_worker_no_proxy():
     time.sleep(10)
     driver.close()
 
-    # 嘉驿公寓价格获取
-
-
-def jiayi_hotel_price(checkInDate=today, leaveTime=tomorrow_str):
+def jiayi_hotel_price(checkInDate=today_str, leaveTime=tomorrow_str):
+    print(today_str)
     driver = webdriver.Chrome()
     driver.get(jiayiSite)
     driver.maximize_window()
@@ -60,49 +60,37 @@ def jiayi_hotel_price(checkInDate=today, leaveTime=tomorrow_str):
     driver.find_element_by_xpath('/html/body/div[4]/div[1]/div[1]/div[3]/div[1]/label[2]/input').clear()
     driver.find_element_by_xpath('/html/body/div[4]/div[1]/div[1]/div[3]/div[1]/label[2]/input').send_keys(leaveTime)
     driver.find_element_by_xpath('/html/body/div[4]/div[1]/div[1]/div[3]/div[2]').click()
-    # 特价大床房
+
     driver.implicitly_wait(10)
-    hotelTitle = '广州嘉驿国际公寓(昌岗江南大道店)'
-    roomTitle = driver.find_element_by_xpath('//*[@id="roomSetContainer"]/div/div/div[1]/div[2]/div[3]/p[1]/span').text
-    print(roomTitle)
-    specialRoomPrice = driver.find_element_by_xpath(
-        '//*[@id="roomSetContainer"]/div/div/div[1]/div[2]/div[2]/p[1]/span[2]').text
-    print(specialRoomPrice)
+    #hotelTitle = '广州嘉驿国际公寓(昌岗江南大道店)'
+    roomTitle = driver.find_element_by_xpath('//*[@id="lastbread"]').text
     time.sleep(1)
-
     # 特价大床房
-    # specialRoom
+    specialRoom = driver.find_element_by_xpath('//*[@id="roomSetContainer"]/div/div/div[1]/div[2]/div[2]/p[1]/span[2]').text
     # 特价双床房
-    #hotel.specialDoubleRoom = driver.find_element_by_xpath('//*[@id="roomSetContainer"]/div/div/div[3]/div[2]/div[2]/p[1]/span[2]').text
+    specialDoubleRoom = driver.find_element_by_xpath('//*[@id="roomSetContainer"]/div/div/div[3]/div[2]/div[2]/p[1]/span[2]').text
     # #豪华大床房
-    # hotel.deluxeRoom = driver.find_element_by_xpath('//*[@id="roomSetContainer"]/div/div/div[2]/div[2]/div[2]/p[1]/span[2]').text
+    deluxeRoom = driver.find_element_by_xpath('//*[@id="roomSetContainer"]/div/div/div[2]/div[2]/div[2]/p[1]/span[2]').text
     # #豪华双床房
-    # hotel.deluxeDoubleRoom = driver.find_element_by_xpath('//*[@id="roomSetContainer"]/div/div/div[4]/div[2]/div[2]/p[1]/span[2]').text
+    deluxeDoubleRoom = driver.find_element_by_xpath('//*[@id="roomSetContainer"]/div/div/div[4]/div[2]/div[2]/p[1]/span[2]').text
     # #商务大床房
-    # hotel.businessRoom = driver.find_element_by_xpath('//*[@id="roomSetContainer"]/div/div/div[5]/div[2]/div[2]/p[1]/span[2]').text
+    businessRoom = driver.find_element_by_xpath('//*[@id="roomSetContainer"]/div/div/div[5]/div[2]/div[2]/p[1]/span[2]').text
     # #商务双床房
-    # hotel.businessDoubleRoom = driver.find_element_by_xpath('//*[@id="roomSetContainer"]/div/div/div[6]/div[2]/div[2]/p[1]/span[2]').text
+    businessDoubleRoom = driver.find_element_by_xpath('//*[@id="roomSetContainer"]/div/div/div[6]/div[2]/div[2]/p[1]/span[2]').text
     # #行政豪华大床房
-    # hotel.ExecutiveRoom = driver.find_element_by_xpath('//*[@id="roomSetContainer"]/div/div/div[7]/div[2]/div[2]/p[1]/span[2]').text
+    ExecutiveRoom = driver.find_element_by_xpath('//*[@id="roomSetContainer"]/div/div/div[7]/div[2]/div[2]/p[1]/span[2]').text
     # #行政豪华双床房
-    # hotel.ExecutiveDoubleRoom = driver.find_element_by_xpath('//*[@id="roomSetContainer"]/div/div/div[8]/div[2]/div[2]/p[1]/span[2]').text
+    ExecutiveDoubleRoom = driver.find_element_by_xpath('//*[@id="roomSetContainer"]/div/div/div[8]/div[2]/div[2]/p[1]/span[2]').text
 
-    # ------------连接mysql数据库的方法-----------
-    # try:
-    #     mysqlUtil =  Mysql()
-    #     # 获取数据库连接
-    #     mysqlUtil.__init__()
-    #     print('数据库连接成功!!')
-    #     sql = '''insert into price(hotel_id,room_id,price,checkInDate) values(%s,%s,%s,%s)'''
-    #     param = [['1','1',specialRoomPrice,checkInDate]]
-    #     mysqlUtil.insert(sql,param)
-    # except Exception as e:
-    #   print("异常" + e)
+    driver.implicitly_wait(10)
+
+    hotel.roomClass.insert_One(roomTitle,specialRoom,specialDoubleRoom,deluxeRoom,deluxeDoubleRoom,
+                           businessRoom,businessDoubleRoom,ExecutiveRoom,
+                           ExecutiveDoubleRoom,checkInDate)
 
 
-
-    time.sleep(20)
-    driver.close()
-
-
-jiayi_hotel_price()
+#jiayi_hotel_price()
+def timeCumulate(checkInTime='2018-3-8',leaveTime='2018-4-8'):
+        a=1
+        return
+timeCumulate()
