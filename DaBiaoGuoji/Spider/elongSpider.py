@@ -8,6 +8,7 @@ import codecs
 import multiprocessing as mp
 from os import makedirs
 from os.path import exists
+import threading
 from DaBiaoGuoji.Model import hotel
 
 
@@ -90,7 +91,26 @@ def jiayi_hotel_price(checkInDate=today_str, leaveTime=tomorrow_str):
 
 
 #jiayi_hotel_price()
-def timeCumulate(checkInTime='2018-3-8',leaveTime='2018-4-8'):
-        a=1
-        return
-timeCumulate()
+
+#时间累加器
+def timeCumulate(checkInTime,leaveTime,count):
+    TcheckInTime = datetime.datetime.strptime(checkInTime, "%Y-%m-%d")
+    TleaveTime = datetime.datetime.strptime(leaveTime, "%Y-%m-%d")
+
+    while TleaveTime > TcheckInTime:
+        delta = datetime.timedelta(days=1)
+        TcheckInTime = TcheckInTime + delta
+        print(TcheckInTime.strftime("%Y-%m-%d"))
+        time.sleep(1)
+
+def main():
+    threads = []
+    t1 = threading.Thread(target=timeCumulate, args=('2018-3-8', '2018-3-15',3))
+    #t2 = threading.Thread(target=timeCumulate,args=('2018-3-8', '2018-4-8',2))
+    t1.start()
+    #t2.start()
+    t1.join()
+    #t2.join()
+
+if __name__ == '__main__':
+   main()
