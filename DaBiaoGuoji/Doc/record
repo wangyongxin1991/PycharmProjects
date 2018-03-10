@@ -1,6 +1,4 @@
-需要下载的包
-pip install zope.interface-4.4.3
-pip install mysql-connector-python-rf
+
 所有需要下载的插件的可以使用 pip 下载
 说明:1.本工程是针对广州艺龙旅行网的数据爬取,获取到广州嘉驿公寓和其他几家公寓在不同时间段的价格变化.
 2.本工程使用selenium +Google/chromedriver爬取, mongoDB存储数据
