@@ -11,7 +11,6 @@ site = 'https://ebooking.elong.com'
 site2 = 'http://hotel.elong.com/search/list_cn_2001.html'
 # ?keywords=%E8%BE%BE%E9%95%96%E5%9B%BD%E9%99%85%E4%B8%AD%E5%BF%83
 jiayiSite = 'http://hotel.elong.com/90568833/'
-locaction = '广州市'
 today = datetime.date.today()
 today_str = today.strftime('%Y-%m-%d')
 tomorrow_str = (today + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
@@ -40,11 +39,9 @@ def jiayi_hotel_price(checkInDate=today_str, leaveTime=tomorrow_str):
     driver.maximize_window()
     driver.implicitly_wait(10)  # 隐形等待10秒
     inputDate(checkInDate,leaveTime)
-    #Global.set_value('timeFlag','True')
     time.sleep(500)
     driver.close()
     return
-
 
 def inputDate(checkInDate,leaveDate):
     # 将页面滚动条下拉到合适的位置
@@ -111,12 +108,13 @@ def timeCumulate(checkInTime,leaveTime):
             TcheckInTime = TcheckInTime + delta
             inputDate(TcheckInTime.strftime("%Y-%m-%d"),(TcheckInTime + delta).strftime("%Y-%m-%d"))
         print(TcheckInTime.strftime("%Y-%m-%d"))
+        #10秒查询一次
         time.sleep(10)
 
 def main():
     threads = []
-    t1 = threading.Thread(target=timeCumulate, args=('2018-3-15', '2018-3-25'))
-    t2 = threading.Thread(target=jiayi_hotel_price,args=('2018-3-15', '2018-3-16'))
+    t1 = threading.Thread(target=timeCumulate, args=('2018-3-20', '2018-4-2'))
+    t2 = threading.Thread(target=jiayi_hotel_price,args=('2018-03-15', '2018-03-16'))
     t1.start()
     t2.start()
     t1.join()
