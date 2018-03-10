@@ -9,7 +9,6 @@ _log = Logger('FileOperation')
 # 获取mongodb的配置信息
 _conf = config.dbconfigs.get('mongodb')
 
-
 class getConnect(object):
     StreamHandler(sys.stdout).push_application()
     logger = Logger('MongoDB')
