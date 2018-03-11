@@ -81,3 +81,29 @@ fontname为字体名称，italic为斜体，bold为黑体字，fixed为默认字
 tesseract test.png output_2 -l num
 
 我们可以看到新生成的文件output_2的内容为762408，内容完全正确。细心的人会发现，最后一句指令，我们使用了指令[-l num]而不是[-l eng]。这说明，最后一次转换我们使用的是新生成的num语言的匹配库而不是默认的eng语言匹配库。
+
+-------------------------------------------------------------------------------------------
+1、合并图片
+2、生成box文件
+tesseract langyp.fontyp.exp0.tif langyp.fontyp.exp0 -l eng -psm 7 batch.nochop makebox
+3、修改box文件
+4、生成font_properties
+echo fontyp 0 0 0 0 0 >font_properties
+5、生成训练文件
+tesseract langyp.fontyp.exp0.tif langyp.fontyp.exp0 -l eng -psm 7 nobatch box.train
+6、生成字符集文件
+unicharset_extractor langyp.fontyp.exp0.box
+7、生成shape文件
+shapeclustering -F font_properties -U unicharset -O langyp.unicharset langyp.fontyp.exp0.tr
+8、生成聚集字符特征文件
+mftraining -F font_properties -U unicharset -O langyp.unicharset langyp.fontyp.exp0.tr
+9、生成字符正常化特征文件
+cntraining langyp.fontyp.exp0.tr
+10、更名
+rename normproto fontyp.normproto
+rename inttemp fontyp.inttemp
+rename pffmtable fontyp.pffmtable
+rename unicharset fontyp.unicharset
+rename shapetable fontyp.shapetable
+11、合并训练文件，生成fontyp.traineddata
+combine_tessdata fontyp.
