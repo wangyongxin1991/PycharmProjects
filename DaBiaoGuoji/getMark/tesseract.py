@@ -272,7 +272,7 @@ def CFS(im):
   zoneHB=[]#各区块的Y轴[起始，终点]列表
 
   xmax=0#上一区块结束黑点横坐标,这里是初始化
-  for i in range(10):
+  for i in range(5):
 
       try:
           x_fd,y_fd = detectFgPix(im,xmax)
